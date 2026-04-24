@@ -68,7 +68,7 @@ Renames after processing:
 
 ## Variant Override
 
-If mob-boss passes a variant path in your args (e.g. `variant: ~/.claude/skills/mob-boss/agents/variants/exp-042/`), load those agent definitions instead of `~/.mob-boss/agents/main/`. Fall back to main for any agent not overridden by the variant.
+If mob-boss passes a variant path in your args (e.g. `variant: ~/.mob-boss/agents/variants/exp-042/`), load those agent definitions instead of `~/.mob-boss/agents/main/`. Fall back to main for any agent not overridden by the variant.
 
 If no variant is specified, default to `~/.mob-boss/agents/main/` (mob-boss's evolved working set), not the canonical `~/.claude/agents/main/`.
 
