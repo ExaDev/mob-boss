@@ -15,5 +15,8 @@
     "code-review",
     "metrics",
     "evolution"
+  ],
+  "dependencies": [
+    "team-manager"
   ]
 }
