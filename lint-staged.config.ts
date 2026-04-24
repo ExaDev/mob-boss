@@ -1,4 +1,5 @@
+const typecheck = () => "tsc -p tsconfig.json --noEmit";
+
 export default {
-  "release.config.mjs": ["tsc --noEmit"],
-  "scripts/sync-version.ts": ["tsc --noEmit"],
+  "{release.config.mjs,scripts/sync-version.ts}": [typecheck],
 };
