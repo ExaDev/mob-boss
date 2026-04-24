@@ -27,18 +27,31 @@ If you are nested inside a mob-boss session, the parent has already:
 
 **When invoked inline via the Skill tool (no mob-boss wrapper):** you MUST set up the Monitor yourself before spawning the developer. Without it, the developer can complete multiple phases' worth of work before you see a single `REVIEW_REQUEST` signal, defeating the per-chunk review cadence. Check both: is `.mob-boss/` initialised? is there a running Monitor watching signals + feedback?
 
-Kick off the Monitor with:
+Kick off the Monitor with a platform-aware command:
+
+```bash
+# Detect the platform and build the right watcher command
+if command -v fswatch >/dev/null 2>&1; then
+  # macOS
+  WATCH_CMD="fswatch -0 --event Created --event Renamed --event MovedTo .mob-boss/signals/ .mob-boss/feedback/ | tr '\\0' '\\n'"
+else
+  # Linux
+  WATCH_CMD="inotifywait -m -e create -e moved_to --format '%w%f' .mob-boss/signals/ .mob-boss/feedback/"
+fi
+```
+
+Then start the Monitor:
 
 ```
 Monitor({
   description: "REVIEW_REQUEST and feedback signals in .mob-boss/",
   persistent: true,
   timeout_ms: 3600000,
-  command: "inotifywait -m -e create -e moved_to --format '%w%f' .mob-boss/signals/ .mob-boss/feedback/ 2>/dev/null | grep --line-buffered -E '(REVIEW_REQUEST|DESIGN_QUESTION|DEVELOPER_ASKS|EXPERT_ASKS|_ADDRESSED)\\.md$' | grep --line-buffered -vE '(_CHECKED|_DONE|_ANSWERED|_RECEIVED)\\.md$'"
+  command: $WATCH_CMD
 })
 ```
 
-The filter matches only events worth acting on: new review requests, new questions, and `_ADDRESSED` feedback closures. It excludes the `_CHECKED / _DONE / _ANSWERED / _RECEIVED` suffixes that YOU rename files to during processing (those would otherwise re-notify and create noise).
+The command streams one line per file-creation event. You process each event as it arrives — no polling.
 
 Confirm the Monitor is running before moving on to Phase 1a. If existing `.mob-boss/` state from a prior dispatch is still on disk (stale `dispatch-context.md`, leftover `REVIEW_REQUEST_*_CHECKED.md`), archive it to `.mob-boss/archive/<date>-<slug>/` BEFORE starting the new dispatch.
 
