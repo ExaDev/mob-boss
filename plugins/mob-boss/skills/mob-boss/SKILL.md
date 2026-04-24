@@ -2,7 +2,7 @@
 name: mob-boss
 description: Top-level orchestrator — directs team managers, monitors performance metrics, and evolves agent definitions through patient A/B testing. Use this as the entry point for managed development work. With no args, reports in-progress dispatch status.
 disable-model-invocation: true
-allowed-tools: Agent Read Write Edit Grep Glob Skill Monitor TaskCreate TaskUpdate TaskList TaskStop Bash(git status:*) Bash(git log:*) Bash(git diff:*) Bash(git show:*) Bash(git -C:*) Bash(bash ${CLAUDE_SKILL_DIR}/preamble.sh) Bash(bash ${CLAUDE_SKILL_DIR}/preamble.sh *) Bash(echo * >> *) Bash(mkdir -p *) Bash(mv .mob-boss/*) Bash(ls .mob-boss/*) Bash(ls -la .mob-boss/*) Bash(cat .mob-boss/*) Bash(inotifywait:*) Bash(fswatch:*) Bash(tail * .mob-boss/*) Bash(head * .mob-boss/*) Bash(wc -l .mob-boss/*) Bash(wc -l *) Write(.mob-boss/**) Edit(.mob-boss/**) Write(${CLAUDE_SKILL_DIR}/**) Edit(${CLAUDE_SKILL_DIR}/**)
+allowed-tools: Agent Read Write Edit Grep Glob Skill Monitor TaskCreate TaskUpdate TaskList TaskStop Bash(git status:*) Bash(git log:*) Bash(git diff:*) Bash(git show:*) Bash(git -C:*) Bash(bash ${CLAUDE_SKILL_DIR}/preamble.sh) Bash(bash ${CLAUDE_SKILL_DIR}/preamble.sh *) Bash(echo * >> *) Bash(mkdir -p *) Bash(mv .mob-boss/*) Bash(ls .mob-boss/*) Bash(ls -la .mob-boss/*) Bash(ls -la ~/.mob-boss/*) Bash(cat .mob-boss/*) Bash(cat ~/.mob-boss/*) Bash(inotifywait:*) Bash(fswatch:*) Bash(tail * .mob-boss/*) Bash(head * .mob-boss/*) Bash(wc -l .mob-boss/*) Bash(wc -l ~/.mob-boss/*) Bash(wc -l *) Bash(cp -R ${CLAUDE_SKILL_DIR}/agents/main/*) Write(.mob-boss/**) Edit(.mob-boss/**) Write(~/.mob-boss/**) Edit(~/.mob-boss/**) Write(${CLAUDE_SKILL_DIR}/**) Edit(${CLAUDE_SKILL_DIR}/**)
 ---
 
 # Mob Boss
