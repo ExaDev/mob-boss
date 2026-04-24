@@ -27,17 +27,20 @@ The mob-boss skill itself is the top-level orchestrator — it dispatches the te
 ## Usage
 
 ```bash
-# Check in-progress dispatch status
-/mob-boss:mob-boss
+# Verify setup (run before first dispatch)
+/mob-boss:init
 
 # Start a new task
-/mob-boss:mob-boss Implement user authentication with OAuth2
+/mob-boss:dispatch Implement user authentication with OAuth2
+
+# Check in-progress dispatch status
+/mob-boss:status
 
 # Resume an interrupted dispatch
-/mob-boss:mob-boss resume
+/mob-boss:resume
 
 # Close out an in-progress dispatch without further work
-/mob-boss:mob-boss close-out
+/mob-boss:close-out
 ```
 
 ## Requirements
@@ -107,19 +110,23 @@ Each package accumulates knowledge:
 plugins/mob-boss/
 ├── .claude-plugin/plugin.json
 └── skills/
-    ├── mob-boss/
-    │   ├── SKILL.md                      # Orchestrator instructions
-    │   ├── preamble.sh                   # Runtime environment setup + global state seeding
-    │   ├── agents/main/                  # Canonical agent profiles
+    ├── dispatch/                     # Start new dispatches
+    │   ├── SKILL.md                   # Full orchestrator protocol
+    │   ├── preamble.sh                # Runtime environment setup + global state seeding
+    │   ├── agents/main/               # Canonical agent profiles
     │   │   ├── architect.md + guidance/
     │   │   ├── developer.md + guidance/
     │   │   ├── designer.md + guidance/
     │   │   ├── reviewer.md + guidance/
     │   │   └── project-expert.md
-    │   └── templates/                    # Copied into each new package on init
+    │   └── templates/                  # Copied into each new package on init
+    ├── status/SKILL.md                # Read-only dispatch status check
+    ├── resume/SKILL.md                # Resume interrupted dispatch
+    ├── close-out/SKILL.md             # Close out without further work
+    ├── init/SKILL.md                  # Verify setup / first-time seed
     └── team-manager/
-        ├── SKILL.md                      # Dispatch coordinator
-        └── context.sh                    # Agent profile loading
+        ├── SKILL.md                   # Dispatch coordinator
+        └── context.sh                 # Agent profile loading
 ```
 
 ## Licence
