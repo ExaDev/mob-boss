@@ -12,7 +12,7 @@
       "name": "mob-boss",
       "source": "./plugins/mob-boss",
       "description": "Orchestrates AI agent teams (architect, designer, developer, reviewer, project-expert) with tiered incremental review, metrics-driven evolution, and per-package knowledge accumulation. Includes the team-manager skill for dispatch coordination.",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": {
         "name": "ExaDev"
       },
