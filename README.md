@@ -93,23 +93,33 @@ Each package accumulates knowledge:
 - Close-out curation investigates, cross-references, and records into `.mob-boss/expert/knowledge/`
 - The orientation snippet is injected into every agent spawn in future dispatches
 
+### State layout
+
+| Location | Purpose |
+|---|---|
+| `${CLAUDE_SKILL_DIR}/` (plugin) | Read-only: canonical agent profiles, templates, preamble |
+| `~/.mob-boss/` (global) | Mutable: evolved agents, experiment variants, metrics, changelog |
+| `<package>/.mob-boss/` (per-package) | Mutable: signals, feedback, archive, project-expert knowledge |
+
 ## Structure
 
 ```
 plugins/mob-boss/
 ├── .claude-plugin/plugin.json
-└── skills/mob-boss/
-    ├── SKILL.md                      # Orchestrator instructions
-    ├── preamble.sh                   # Runtime environment setup
-    ├── agents/main/                  # Agent profiles
-    │   ├── architect.md + guidance/
-    │   ├── developer.md + guidance/
-    │   ├── designer.md + guidance/
-    │   ├── reviewer.md + guidance/
-    │   └── project-expert.md
-    ├── templates/                    # Copied into each new package
-    ├── changelog/                    # Agent evolution history
-    └── metrics/                      # Cross-dispatch performance data
+└── skills/
+    ├── mob-boss/
+    │   ├── SKILL.md                      # Orchestrator instructions
+    │   ├── preamble.sh                   # Runtime environment setup + global state seeding
+    │   ├── agents/main/                  # Canonical agent profiles
+    │   │   ├── architect.md + guidance/
+    │   │   ├── developer.md + guidance/
+    │   │   ├── designer.md + guidance/
+    │   │   ├── reviewer.md + guidance/
+    │   │   └── project-expert.md
+    │   └── templates/                    # Copied into each new package on init
+    └── team-manager/
+        ├── SKILL.md                      # Dispatch coordinator
+        └── context.sh                    # Agent profile loading
 ```
 
 ## Licence
