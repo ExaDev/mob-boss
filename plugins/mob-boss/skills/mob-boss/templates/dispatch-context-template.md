@@ -62,10 +62,10 @@ If Phase 1 was single-round (no reconciliation needed), write: "Single round —
 
 ## Agent profile paths
 
-- Developer: `~/.claude/skills/mob-boss/agents/main/developer.md`
-- Reviewer: `~/.claude/skills/mob-boss/agents/main/reviewer.md`
-- Architect: `~/.claude/skills/mob-boss/agents/main/architect.md`
-- Designer: `~/.claude/skills/mob-boss/agents/main/designer.md`
+- Developer: `~/.mob-boss/agents/main/developer.md`
+- Reviewer: `~/.mob-boss/agents/main/reviewer.md`
+- Architect: `~/.mob-boss/agents/main/architect.md`
+- Designer: `~/.mob-boss/agents/main/designer.md`
 - Project expert: `<package>/.mob-boss/expert/agent.md` (per-package state)
 
 ---

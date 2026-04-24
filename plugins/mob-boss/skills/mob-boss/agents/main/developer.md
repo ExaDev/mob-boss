@@ -25,7 +25,7 @@ Keep two things separate:
 
 | Kind of guidance | Where it lives | What it covers |
 |---|---|---|
-| **Stack implementation guidance** (this section) | `~/.claude/skills/mob-boss/agents/main/developer/guidance/<stack>.md` — part of your skill, applies across every project that uses that stack | Feature directory structure, data-fetching layering, component/route decomposition rules, module DI shape — anything about *how code is organised for the stack* |
+| **Stack implementation guidance** (this section) | `${CLAUDE_SKILL_DIR}/agents/main/developer/guidance/<stack>.md` — part of your skill, applies across every project that uses that stack | Feature directory structure, data-fetching layering, component/route decomposition rules, module DI shape — anything about *how code is organised for the stack* |
 | **Project conventions** | `CLAUDE.md`, DESIGN.md files, and the project-expert orientation in your prompt (covered under "Discover the project" above) | The specific package's choices: existing module names, naming conventions, domain terms, current state of migration toward the stack ideal |
 
 Both apply. They answer different questions: *how should this stack be structured* vs *what does this specific project already look like*.
@@ -40,7 +40,7 @@ Read the matching guidance file:
 
 | Target stack | Guidance file |
 |---|---|
-| React on web (Next.js, Vite, CRA) | `~/.claude/skills/mob-boss/agents/main/developer/guidance/react-web.md` |
+| React on web (Next.js, Vite, CRA) | `${CLAUDE_SKILL_DIR}/agents/main/developer/guidance/react-web.md` |
 | React Native | _not yet written — follow base rules and flag to user_ |
 | Other | _not yet written — follow base rules and flag to user_ |
 

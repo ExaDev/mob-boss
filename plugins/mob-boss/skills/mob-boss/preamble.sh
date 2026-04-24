@@ -268,11 +268,28 @@ No polling, no missed signals. Do not skip this step.
 
 EOF
 
-# --- 6. Global metrics context ---
-GLOBAL_METRICS="$HOME/.claude/skills/mob-boss/metrics"
+# --- 6. Seed global state if first run ---
+GLOBAL_STATE="$HOME/.mob-boss"
+if [[ ! -d "$GLOBAL_STATE" ]]; then
+  echo "First global setup: seeding $GLOBAL_STATE/ from plugin"
+  mkdir -p "$GLOBAL_STATE"/{agents/main,agents/variants,metrics,changelog}
+  # Seed canonical agent profiles from the plugin
+  if [[ -d "$SKILL_DIR/agents/main" ]]; then
+    cp -R "$SKILL_DIR/agents/main/"* "$GLOBAL_STATE/agents/main/"
+    echo "  Seeded agents/main/ from plugin"
+  fi
+  touch "$GLOBAL_STATE/metrics/team-log.jsonl"
+  echo "  Created metrics/team-log.jsonl"
+  echo "" > "$GLOBAL_STATE/metrics/summary.md"
+  echo "# Mob Boss Changelog" > "$GLOBAL_STATE/changelog/CHANGELOG.md"
+  echo "  Created changelog/CHANGELOG.md"
+fi
+
+# --- 7. Global metrics context ---
+GLOBAL_METRICS="$GLOBAL_STATE/metrics"
 
 echo "=== Current Metrics (global) ==="
-if [[ -f "$GLOBAL_METRICS/summary.md" ]]; then
+if [[ -f "$GLOBAL_METRICS/summary.md" ]] && [[ -s "$GLOBAL_METRICS/summary.md" ]]; then
   cat "$GLOBAL_METRICS/summary.md"
 else
   echo "(no metrics yet)"
@@ -288,8 +305,8 @@ fi
 echo ""
 
 echo "=== Changelog ==="
-if [[ -f "$HOME/.claude/skills/mob-boss/changelog/CHANGELOG.md" ]]; then
-  head -30 "$HOME/.claude/skills/mob-boss/changelog/CHANGELOG.md"
+if [[ -f "$GLOBAL_STATE/changelog/CHANGELOG.md" ]] && [[ -s "$GLOBAL_STATE/changelog/CHANGELOG.md" ]]; then
+  head -30 "$GLOBAL_STATE/changelog/CHANGELOG.md"
 else
   echo "(no changelog yet)"
 fi
@@ -318,6 +335,7 @@ cat <<EOF
 === Environment ===
 Package root:  $PKG_ROOT
 .mob-boss:     $MB_DIR
+Global state:  $GLOBAL_STATE
 Signals:       $MB_DIR/signals/
 Feedback:      $MB_DIR/feedback/
 Progress log:  $PROGRESS_LOG

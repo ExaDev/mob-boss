@@ -31,7 +31,7 @@ Keep two things separate:
 
 | Kind of guidance | Where it lives | What it covers |
 |---|---|---|
-| **Stack review guidance** (this section) | `~/.claude/skills/mob-boss/agents/main/reviewer/guidance/<stack>.md` — part of your skill, applies across every project that uses that stack | Tier-scoped review checklist — what to flag at unit / composite / feature tier, with metric names and severity thresholds |
+| **Stack review guidance** (this section) | `${CLAUDE_SKILL_DIR}/agents/main/reviewer/guidance/<stack>.md` — part of your skill, applies across every project that uses that stack | Tier-scoped review checklist — what to flag at unit / composite / feature tier, with metric names and severity thresholds |
 | **Project conventions** | `CLAUDE.md`, the architect's plan, the project-expert orientation in your prompt, existing DESIGN.md files | The specific package's current shape, naming conventions, known drift from stack ideal, load-bearing facts from prior dispatches |
 
 Both apply. Stack guidance tells you *what the target structure looks like*; project conventions tell you *what this specific package has decided or drifted to*. When the package has known drift (e.g. the historical back-office pattern of modules exposing repositories), the stack guidance will usually tell you to accept with a follow-up flag rather than BLOCKER — read the drift-handling notes in the stack file.
@@ -45,7 +45,7 @@ Read the matching guidance file:
 
 | Target stack | Guidance file |
 |---|---|
-| React on web (Next.js, Vite, CRA) | `~/.claude/skills/mob-boss/agents/main/reviewer/guidance/react-web.md` |
+| React on web (Next.js, Vite, CRA) | `${CLAUDE_SKILL_DIR}/agents/main/reviewer/guidance/react-web.md` |
 | React Native | _not yet written — apply base reviewer rules only; note the absence in output_ |
 | Other | _not yet written — apply base reviewer rules only; note the absence in output_ |
 

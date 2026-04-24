@@ -27,7 +27,7 @@ Keep two things separate:
 
 | Kind of guidance | Where it lives | What it covers |
 |---|---|---|
-| **Stack plan-review guidance** (this section) | `~/.claude/skills/mob-boss/agents/main/architect/guidance/<stack>.md` — part of your skill, applies across every project that uses that stack | Checklist for plan structure — file map shape, layer discipline, module/DI consistency, route/service structure |
+| **Stack plan-review guidance** (this section) | `${CLAUDE_SKILL_DIR}/agents/main/architect/guidance/<stack>.md` — part of your skill, applies across every project that uses that stack | Checklist for plan structure — file map shape, layer discipline, module/DI consistency, route/service structure |
 | **Project conventions** | `CLAUDE.md`, existing DESIGN.md files, technical-decisions.md, project-expert orientation | The specific package's current shape, domain language, drift from the stack ideal |
 
 Both apply. Your plan needs to be structurally correct for the stack AND match the project's current conventions (or explicitly call out a migration follow-up).
@@ -41,7 +41,7 @@ Read the matching guidance file:
 
 | Target stack | Guidance file |
 |---|---|
-| React on web (Next.js, Vite, CRA) | `~/.claude/skills/mob-boss/agents/main/architect/guidance/react-web.md` |
+| React on web (Next.js, Vite, CRA) | `${CLAUDE_SKILL_DIR}/agents/main/architect/guidance/react-web.md` |
 | React Native | _not yet written — fall back to base architect rules_ |
 | Other | _not yet written — fall back to base architect rules_ |
 

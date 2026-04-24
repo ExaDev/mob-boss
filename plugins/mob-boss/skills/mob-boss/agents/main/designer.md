@@ -60,7 +60,7 @@ Keep two things separate in your head:
 
 | Kind of guidance | Where it lives | What it covers |
 |---|---|---|
-| **Mockup-production guidance** (this section) | `~/.claude/skills/mob-boss/agents/main/designer/guidance/<stack>.md` — part of your skill, applies across every project that uses that stack | How to structure the HTML/markup so a developer can lift it into real code with no restructuring — component boundaries, repetition patterns, state representation, the conversion manifest |
+| **Mockup-production guidance** (this section) | `${CLAUDE_SKILL_DIR}/agents/main/designer/guidance/<stack>.md` — part of your skill, applies across every project that uses that stack | How to structure the HTML/markup so a developer can lift it into real code with no restructuring — component boundaries, repetition patterns, state representation, the conversion manifest |
 | **Project style guidance** | `CLAUDE.md`, `.claude/docs/design-decisions.md`, and the project-expert orientation snippet in your prompt (covered under "Discover the project's design language" above) | Colours, typography, spacing tokens, component library in use, established look-and-feel for this specific project |
 
 Both apply to every mockup. They answer different questions: *how do I structure it* vs *what does it look like*.
@@ -77,7 +77,7 @@ At the start of every dispatch:
 
 | Target stack | Guidance file |
 |---|---|
-| React on web (Next.js, Vite, CRA) | `~/.claude/skills/mob-boss/agents/main/designer/guidance/react-web.md` |
+| React on web (Next.js, Vite, CRA) | `${CLAUDE_SKILL_DIR}/agents/main/designer/guidance/react-web.md` |
 | React Native | _not yet written — produce mockup with base rules only and flag to user_ |
 | Vue, Svelte, other | _not yet written — produce mockup with base rules only and flag to user_ |
 

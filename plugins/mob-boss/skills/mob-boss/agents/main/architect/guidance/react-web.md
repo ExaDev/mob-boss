@@ -2,7 +2,7 @@
 
 **Scope:** What to check and enforce when planning work for a React-on-web package (Next.js, Vite, CRA — **not React Native**). Use in Phase 1a when producing the implementation plan, and again during any reconcile or tier-3 consultation on a React-web feature.
 
-Reference the full principles in `~/.claude/skills/mob-boss/agents/main/developer/guidance/react-web.md` — the developer reads those when implementing. Your job is to ensure your plan **routes the developer through the right structure** rather than letting them discover it on the fly.
+Reference the full principles in `${CLAUDE_SKILL_DIR}/agents/main/developer/guidance/react-web.md` — the developer reads those when implementing. Your job is to ensure your plan **routes the developer through the right structure** rather than letting them discover it on the fly.
 
 ## Plan structure checks
 
