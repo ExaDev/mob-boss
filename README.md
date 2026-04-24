@@ -18,7 +18,7 @@ The mob-boss skill itself is the top-level orchestrator — it dispatches the te
 
 ```bash
 # Add the marketplace
-/plugin marketplace add ExaDev/mob-boss
+/plugin marketplace add exadev/mob-boss
 
 # Install the plugin
 /plugin install mob-boss@exadev-mob-boss
