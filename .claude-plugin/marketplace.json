@@ -2,7 +2,7 @@
   "name": "exadev-mob-boss",
   "owner": {
     "name": "ExaDev",
-    "email": "dev@exadev.co"
+    "email": "dev@exadev.io"
   },
   "metadata": {
     "description": "ExaDev's mob-boss orchestration skill — AI agent team management with tiered review, metrics-driven evolution, and project-expert knowledge accumulation."
@@ -19,7 +19,13 @@
       "homepage": "https://github.com/ExaDev/mob-boss",
       "repository": "https://github.com/ExaDev/mob-boss",
       "license": "UNLICENSED",
-      "keywords": ["orchestration", "agent-teams", "code-review", "metrics", "evolution"],
+      "keywords": [
+        "orchestration",
+        "agent-teams",
+        "code-review",
+        "metrics",
+        "evolution"
+      ],
       "category": "development-workflows"
     }
   ]

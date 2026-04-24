@@ -4,10 +4,16 @@
   "version": "1.8.0",
   "author": {
     "name": "ExaDev",
-    "email": "dev@exadev.co"
+    "email": "dev@exadev.io"
   },
   "homepage": "https://github.com/ExaDev/mob-boss",
   "repository": "https://github.com/ExaDev/mob-boss",
   "license": "UNLICENSED",
-  "keywords": ["orchestration", "agent-teams", "code-review", "metrics", "evolution"]
+  "keywords": [
+    "orchestration",
+    "agent-teams",
+    "code-review",
+    "metrics",
+    "evolution"
+  ]
 }
