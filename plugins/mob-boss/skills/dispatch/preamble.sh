@@ -3,7 +3,8 @@
 #
 # Responsibilities:
 #   1. Locate the current package root
-#   2. Detect platform (Linux/macOS) and verify the file-watcher binary
+#   2. Detect platform (Linux/macOS/other) and select the best available watcher
+#      (native fswatch/inotifywait if present, polling fallback otherwise)
 #   3. Initialize .mob-boss/ if this is the first dispatch in this package
 #   4. Detect stale in-progress dispatches and surface them for resume
 #   5. Emit the exact Monitor command the orchestrator must invoke first
@@ -99,49 +100,53 @@ echo "=== mob-boss session ==="
 echo "Package root: $PKG_ROOT"
 
 # --- 2. Platform detect + watcher check ---
+WACHER_TYPE=""
+
 case "$(uname -s)" in
   Linux*)
     PLATFORM=linux
-    if ! command -v inotifywait >/dev/null 2>&1; then
-      cat <<EOF
-ERROR: mob-boss requires 'inotifywait' on Linux for reliable file-watching.
-  Install: sudo apt install inotify-tools   (or your distro's equivalent)
-  This is a one-time setup. The tool emits kernel-level file events, avoiding
-  expensive polling loops.
-EOF
-      exit 1
+    if command -v inotifywait >/dev/null 2>&1; then
+      WATCHER_TYPE=native
+      # Note: we single-quote $MB_DIR so it expands here, and leave the command
+      # shell-ready. Claude passes this verbatim to the Monitor tool.
+      #
+      # IMPORTANT: watch BOTH create AND moved_to. Atomic writes (temp file +
+      # rename to final name — Node's fs.writeFile, Edit tool, many editors) only
+      # fire CREATE on the .tmp file and MOVED_TO on the final — watching CREATE
+      # alone fires for the .tmp.* filename but misses the real signal filename.
+      WATCH_CMD="inotifywait -m -e create -e moved_to --format '%w%f' '$MB_DIR/signals/' '$MB_DIR/feedback/'"
+    else
+      WATCHER_TYPE=poll
+      WATCH_CMD="while sleep 2; do find '$MB_DIR/signals/' '$MB_DIR/feedback/' -maxdepth 1 -type f -newer '$MB_DIR/.watch-marker' -not -name '_CHECKED*' -not -name '_ANSWERED*' -not -name '_ADDRESSED*' -not -name '_DONE*' -not -name '_RECEIVED*' 2>/dev/null; touch '$MB_DIR/.watch-marker'; done"
+      echo "WARNING: 'inotifywait' not found — falling back to polling (2s interval)."
+      echo "  For lower latency, install: sudo apt install inotify-tools"
     fi
-    # Note: we single-quote $MB_DIR so it expands here, and leave the command
-    # shell-ready. Claude passes this verbatim to the Monitor tool.
-    #
-    # IMPORTANT: watch BOTH create AND moved_to. Atomic writes (temp file +
-    # rename to final name — Node's fs.writeFile, Edit tool, many editors) only
-    # fire CREATE on the .tmp file and MOVED_TO on the final — watching CREATE
-    # alone fires for the .tmp.* filename but misses the real signal filename.
-    WATCH_CMD="inotifywait -m -e create -e moved_to --format '%w%f' '$MB_DIR/signals/' '$MB_DIR/feedback/'"
     ;;
   Darwin*)
     PLATFORM=macos
-    if ! command -v fswatch >/dev/null 2>&1; then
-      cat <<EOF
-ERROR: mob-boss requires 'fswatch' on macOS for reliable file-watching.
-  Install: brew install fswatch
-  This is a one-time setup. The tool emits kernel-level file events (FSEvents),
-  avoiding expensive polling loops.
-EOF
-      exit 1
+    if command -v fswatch >/dev/null 2>&1; then
+      WATCHER_TYPE=native
+      # IMPORTANT: include Renamed + MovedTo alongside Created. Atomic writes land
+      # via rename on macOS FSEvents — Created alone misses the final filename.
+      WATCH_CMD="fswatch -0 --event Created --event Renamed --event MovedTo '$MB_DIR/signals/' '$MB_DIR/feedback/' | tr '\0' '\n'"
+    else
+      WATCHER_TYPE=poll
+      WATCH_CMD="while sleep 2; do find '$MB_DIR/signals/' '$MB_DIR/feedback/' -maxdepth 1 -type f -newer '$MB_DIR/.watch-marker' -not -name '_CHECKED*' -not -name '_ANSWERED*' -not -name '_ADDRESSED*' -not -name '_DONE*' -not -name '_RECEIVED*' 2>/dev/null; touch '$MB_DIR/.watch-marker'; done"
+      echo "WARNING: 'fswatch' not found — falling back to polling (2s interval)."
+      echo "  For lower latency, install: brew install fswatch"
     fi
-    # IMPORTANT: include Renamed + MovedTo alongside Created. Atomic writes land
-    # via rename on macOS FSEvents — Created alone misses the final filename.
-    WATCH_CMD="fswatch -0 --event Created --event Renamed --event MovedTo '$MB_DIR/signals/' '$MB_DIR/feedback/' | tr '\0' '\n'"
     ;;
   *)
-    echo "ERROR: mob-boss only supports Linux and macOS (got: $(uname -s))"
-    exit 1
+    PLATFORM="$(uname -s)"
+    WATCHER_TYPE=poll
+    WATCH_CMD="while sleep 2; do find '$MB_DIR/signals/' '$MB_DIR/feedback/' -maxdepth 1 -type f -newer '$MB_DIR/.watch-marker' -not -name '_CHECKED*' -not -name '_ANSWERED*' -not -name '_ADDRESSED*' -not -name '_DONE*' -not -name '_RECEIVED*' 2>/dev/null; touch '$MB_DIR/.watch-marker'; done"
+    echo "WARNING: Unsupported platform ($PLATFORM) — falling back to polling (2s interval)."
     ;;
 esac
 
-echo "Platform: $PLATFORM"
+touch "$MB_DIR/.watch-marker"
+
+echo "Platform: $PLATFORM (watcher: $WATCHER_TYPE)"
 
 # --- 3. Initialize .mob-boss/ if missing ---
 FRESH_INIT=false
@@ -264,7 +269,10 @@ Monitor command (verbatim, copy into the Monitor tool's 'command' parameter):
   $WATCH_CMD
 
 This streams one line per file creation into your context as a notification.
-No polling, no missed signals. Do not skip this step.
+Do not skip this step.
+
+Watcher type: $WATCHER_TYPE
+$(if [[ "$WATCHER_TYPE" == "poll" ]]; then echo "Note: polling at 2s intervals — file events may appear with up to 2s delay."; echo "For instant kernel-level events, install fswatch (macOS) or inotify-tools (Linux)."; else echo "Using kernel-level file events for instant signal detection."; fi)
 
 EOF
 

@@ -3,7 +3,7 @@ name: resume
 description: Resume an in-progress mob-boss dispatch that was interrupted. Reads the progress log, derives current phase, and re-enters the coordination loop.
 disable-model-invocation: true
 user-invocable: true
-allowed-tools: Agent Read Write Edit Grep Glob Skill Monitor TaskCreate TaskUpdate TaskList TaskStop Bash(git status:*) Bash(git log:*) Bash(git diff:*) Bash(git show:*) Bash(git -C:*) Bash(bash ${CLAUDE_SKILL_DIR}/../dispatch/preamble.sh) Bash(echo * >> *) Bash(mkdir -p *) Bash(mv .mob-boss/*) Bash(ls .mob-boss/*) Bash(ls -la .mob-boss/*) Bash(ls -la ~/.mob-boss/*) Bash(cat .mob-boss/*) Bash(cat ~/.mob-boss/*) Bash(inotifywait:*) Bash(fswatch:*) Bash(tail * .mob-boss/*) Bash(head * .mob-boss/*) Bash(wc -l .mob-boss/*) Bash(wc -l ~/.mob-boss/*) Bash(wc -l *) Write(.mob-boss/**) Edit(.mob-boss/**) Write(~/.mob-boss/**) Edit(~/.mob-boss/**)
+allowed-tools: Agent Read Write Edit Grep Glob Skill Monitor TaskCreate TaskUpdate TaskList TaskStop Bash(git status:*) Bash(git log:*) Bash(git diff:*) Bash(git show:*) Bash(git -C:*) Bash(bash ${CLAUDE_SKILL_DIR}/../dispatch/preamble.sh) Bash(echo * >> *) Bash(mkdir -p *) Bash(mv .mob-boss/*) Bash(ls .mob-boss/*) Bash(ls -la .mob-boss/*) Bash(ls -la ~/.mob-boss/*) Bash(cat .mob-boss/*) Bash(cat ~/.mob-boss/*) Bash(tail * .mob-boss/*) Bash(head * .mob-boss/*) Bash(wc -l .mob-boss/*) Bash(wc -l ~/.mob-boss/*) Bash(wc -l *) Bash(find .mob-boss/*) Bash(touch .mob-boss/*) Bash(sleep *) Write(.mob-boss/**) Edit(.mob-boss/**) Write(~/.mob-boss/**) Edit(~/.mob-boss/**)
 ---
 
 # Mob Boss — Resume

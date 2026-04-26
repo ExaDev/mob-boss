@@ -30,13 +30,17 @@ If you are nested inside a mob-boss session, the parent has already:
 Kick off the Monitor with a platform-aware command:
 
 ```bash
-# Detect the platform and build the right watcher command
+# Detect the best available watcher
 if command -v fswatch >/dev/null 2>&1; then
-  # macOS
+  # macOS — kernel-level FSEvents
   WATCH_CMD="fswatch -0 --event Created --event Renamed --event MovedTo .mob-boss/signals/ .mob-boss/feedback/ | tr '\\0' '\\n'"
-else
-  # Linux
+elif command -v inotifywait >/dev/null 2>&1; then
+  # Linux — kernel-level inotify
   WATCH_CMD="inotifywait -m -e create -e moved_to --format '%w%f' .mob-boss/signals/ .mob-boss/feedback/"
+else
+  # Fallback — polling at 2s intervals (works everywhere, no external deps)
+  touch .mob-boss/.watch-marker
+  WATCH_CMD="while sleep 2; do find .mob-boss/signals/ .mob-boss/feedback/ -maxdepth 1 -type f -newer .mob-boss/.watch-marker -not -name '_CHECKED*' -not -name '_ANSWERED*' -not -name '_ADDRESSED*' -not -name '_DONE*' -not -name '_RECEIVED*' 2>/dev/null; touch .mob-boss/.watch-marker; done"
 fi
 ```
 
