@@ -23,7 +23,26 @@ const config = {
         ],
       },
     ],
-    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        preset: "conventionalcommits",
+        presetConfig: {
+          types: [
+            { type: "feat", section: "Features" },
+            { type: "fix", section: "Bug Fixes" },
+            { type: "refactor", section: "Refactoring" },
+            { type: "perf", section: "Performance" },
+            { type: "docs", section: "Documentation" },
+            { type: "style", section: "Styles" },
+            { type: "test", section: "Tests" },
+            { type: "build", section: "Build" },
+            { type: "ci", section: "CI" },
+            { type: "chore", section: "Chores" },
+          ],
+        },
+      },
+    ],
     [
       "@semantic-release/exec",
       {
