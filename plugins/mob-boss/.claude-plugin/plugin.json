@@ -1,7 +1,7 @@
 {
   "name": "mob-boss",
   "description": "Orchestrates AI agent teams (architect, designer, developer, reviewer, project-expert) with tiered incremental review, metrics-driven evolution, and per-package knowledge accumulation.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": {
     "name": "ExaDev",
     "email": "dev@exadev.io"
