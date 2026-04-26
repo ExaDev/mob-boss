@@ -45,12 +45,15 @@ The mob-boss skill itself is the top-level orchestrator — it dispatches the te
 
 ## Requirements
 
-### Platform file-watcher (mandatory)
+### Platform file-watcher (optional)
 
-The orchestration loop relies on file-watching for real-time signal coordination:
+The orchestration loop uses file-watching for real-time signal coordination. A native watcher is recommended for instant event delivery, but not required — mob-boss falls back to polling at 2s intervals using only standard POSIX tools (`find`, `touch`).
 
-- **macOS**: `brew install fswatch`
-- **Linux**: `sudo apt install inotify-tools` (or your distro's equivalent)
+- **macOS**: `brew install fswatch` (recommended)
+- **Linux**: `sudo apt install inotify-tools` (recommended)
+- **Other platforms**: polling fallback works automatically
+
+No external dependencies are required to run mob-boss.
 
 ### Supported stacks
 
